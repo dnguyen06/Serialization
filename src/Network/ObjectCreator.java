@@ -7,6 +7,7 @@ import java.net.Socket;
 import java.util.Scanner;
 
 import Objects.*;
+import Serialize.Serializer;
 
 public class ObjectCreator {
 
@@ -32,7 +33,8 @@ public class ObjectCreator {
 				 System.out.print("Enter a float value for variable y: ");
 				 a.y = keyboard.nextFloat();
 				 System.out.println("Sending object to serialize");
-				 // jsonString = Serializer.serializeObject(a)
+				 String jsonString = Serializer.serializeObject(a);
+				 System.out.println(jsonString);
 				 // send(jsonString)
 				 
 			 }
@@ -56,7 +58,8 @@ public class ObjectCreator {
 				 }
 				 b1.other = b;
 				 System.out.println("Sending object to serialize");
-				 // jsonString = Serializer.serializeObject(b)
+				 String jsonString = Serializer.serializeObject(b);
+				 System.out.println(jsonString);
 				 // send(jsonString)
 			 }
 			 
