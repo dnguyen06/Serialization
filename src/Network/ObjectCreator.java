@@ -22,6 +22,7 @@ public class ObjectCreator {
 			 int userChoice = keyboard.nextInt();
 			 
 			 if (userChoice == 0) {
+				 System.out.println("Program Exited");
 				 done = true;
 			 }
 			 	 
@@ -73,7 +74,8 @@ public class ObjectCreator {
 				 System.out.print("Enter an integer for the last element in the array: ");
 				 c.array[2] = keyboard.nextInt();
 				 System.out.println("Sending object to serialize");
-				 // jsonString = Serializer.serializeObject(c)
+				 String jsonString = Serializer.serializeObject(c);
+				 System.out.println(jsonString);
 				 // send(jsonString)
 			 }
 			 
@@ -85,9 +87,10 @@ public class ObjectCreator {
 				 a.x = keyboard.nextInt();
 				 System.out.print("Enter a float value for variable y: ");
 				 a.y = keyboard.nextFloat();
-				 d.arrayA[0] = a;
+				 d.arrayA[1] = a;
 				 System.out.println("Sending object to serialize");
-				 // jsonString = Serializer.serializeObject(d)
+				 String jsonString = Serializer.serializeObject(d);
+				 System.out.println(jsonString);
 				 // send(jsonString)
 				 
 				 
@@ -103,7 +106,8 @@ public class ObjectCreator {
 				 a.y = keyboard.nextFloat();
 				 e.list.add(a);
 				 System.out.println("Sending object to serialize");
-				 // jsonString = Serializer.serializeObject(d)
+				 String jsonString = Serializer.serializeObject(e);
+				 System.out.println(jsonString);
 				 // send(jsonString)
 			 }
 			 
