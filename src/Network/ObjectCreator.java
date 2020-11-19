@@ -11,7 +11,7 @@ import Serialize.Serializer;
 
 public class ObjectCreator {
 
-	public static void main(String[] args) {
+	public static void main(String[] args) throws IOException {
 		
 		Scanner keyboard = new Scanner(System.in);
 		boolean done = false;
@@ -36,7 +36,7 @@ public class ObjectCreator {
 				 System.out.println("Sending object to serialize");
 				 String jsonString = Serializer.serializeObject(a);
 				 System.out.println(jsonString);
-				 // send(jsonString)
+				 send(jsonString);
 				 
 			 }
 			 
@@ -61,7 +61,7 @@ public class ObjectCreator {
 				 System.out.println("Sending object to serialize");
 				 String jsonString = Serializer.serializeObject(b);
 				 System.out.println(jsonString);
-				 // send(jsonString)
+				 send(jsonString);
 			 }
 			 
 			 else if (userChoice == 3) {
@@ -76,7 +76,7 @@ public class ObjectCreator {
 				 System.out.println("Sending object to serialize");
 				 String jsonString = Serializer.serializeObject(c);
 				 System.out.println(jsonString);
-				 // send(jsonString)
+				 send(jsonString);
 			 }
 			 
 			 else if (userChoice == 4) {
@@ -91,7 +91,7 @@ public class ObjectCreator {
 				 System.out.println("Sending object to serialize");
 				 String jsonString = Serializer.serializeObject(d);
 				 System.out.println(jsonString);
-				 // send(jsonString)
+				 send(jsonString);
 				 
 				 
 			 }
@@ -108,7 +108,7 @@ public class ObjectCreator {
 				 System.out.println("Sending object to serialize");
 				 String jsonString = Serializer.serializeObject(e);
 				 System.out.println(jsonString);
-				 // send(jsonString)
+				 send(jsonString);
 			 }
 			 
 			 else {
@@ -120,10 +120,12 @@ public class ObjectCreator {
 		keyboard.close();
 	}
 	
-	public void send(String jsonString) throws IOException {
+	public static void send(String jsonString) throws IOException {
 		ServerSocket serverSocket = new ServerSocket(5000);
+		System.out.println("Waiting for Client to connect...");
         Socket clientSocket = serverSocket.accept();
         PrintWriter out = new PrintWriter(clientSocket.getOutputStream(), true);
+        System.out.println("Message sent to Client");
         
         out.write(jsonString);
         out.close();
