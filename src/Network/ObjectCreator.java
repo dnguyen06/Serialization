@@ -10,8 +10,11 @@ import Objects.*;
 import Serialize.Serializer;
 
 public class ObjectCreator {
+	
+	public static int port = 5003;
 
 	public static void main(String[] args) throws IOException {
+		
 		
 		Scanner keyboard = new Scanner(System.in);
 		boolean done = false;
@@ -22,7 +25,7 @@ public class ObjectCreator {
 			 int userChoice = keyboard.nextInt();
 			 
 			 if (userChoice == 0) {
-				 System.out.println("Program Exited");
+				 System.out.println("Server program Exited");
 				 done = true;
 			 }
 			 	 
@@ -121,7 +124,7 @@ public class ObjectCreator {
 	}
 	
 	public static void send(String jsonString) throws IOException {
-		ServerSocket serverSocket = new ServerSocket(5000);
+		ServerSocket serverSocket = new ServerSocket(port++);
 		System.out.println("Waiting for Client to connect...");
         Socket clientSocket = serverSocket.accept();
         PrintWriter out = new PrintWriter(clientSocket.getOutputStream(), true);
@@ -129,6 +132,7 @@ public class ObjectCreator {
         
         out.write(jsonString);
         out.close();
+        
         serverSocket.close();
         clientSocket.close();
        
