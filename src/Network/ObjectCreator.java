@@ -1,5 +1,6 @@
 package Network;
 
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.net.ServerSocket;
@@ -12,6 +13,7 @@ import Serialize.Serializer;
 public class ObjectCreator {
 	
 	public static int port = 5003;
+	public static int fileCounter = 0;
 
 	public static void main(String[] args) throws IOException {
 		
@@ -39,6 +41,7 @@ public class ObjectCreator {
 				 System.out.println("Sending object to serialize");
 				 String jsonString = Serializer.serializeObject(a);
 				 System.out.println(jsonString);
+				 fileCreator(jsonString);
 				 send(jsonString);
 				 
 			 }
@@ -64,6 +67,7 @@ public class ObjectCreator {
 				 System.out.println("Sending object to serialize");
 				 String jsonString = Serializer.serializeObject(b);
 				 System.out.println(jsonString);
+				 fileCreator(jsonString);
 				 send(jsonString);
 			 }
 			 
@@ -79,6 +83,7 @@ public class ObjectCreator {
 				 System.out.println("Sending object to serialize");
 				 String jsonString = Serializer.serializeObject(c);
 				 System.out.println(jsonString);
+				 fileCreator(jsonString);
 				 send(jsonString);
 			 }
 			 
@@ -94,6 +99,7 @@ public class ObjectCreator {
 				 System.out.println("Sending object to serialize");
 				 String jsonString = Serializer.serializeObject(d);
 				 System.out.println(jsonString);
+				 fileCreator(jsonString);
 				 send(jsonString);
 				 
 				 
@@ -111,6 +117,7 @@ public class ObjectCreator {
 				 System.out.println("Sending object to serialize");
 				 String jsonString = Serializer.serializeObject(e);
 				 System.out.println(jsonString);
+				 fileCreator(jsonString);
 				 send(jsonString);
 			 }
 			 
@@ -138,5 +145,17 @@ public class ObjectCreator {
        
       
     }
+	
+	public static void fileCreator(String jsonString) {
+		try {
+			PrintWriter pw = new PrintWriter("File" + Integer.toString(fileCounter++) + ".json");
+			pw.write(jsonString);
+			pw.flush();
+			pw.close();
+			
+		} catch (FileNotFoundException e) {
+			e.printStackTrace();
+		}
+	}
 
 }
