@@ -12,7 +12,7 @@ import Serialize.Serializer;
 
 public class ObjectCreator {
 	
-	public static int port = 5003;
+	public static int port = 5010;
 	public static int fileCounter = 0;
 
 	public static void main(String[] args) throws IOException {
@@ -55,6 +55,7 @@ public class ObjectCreator {
 				 } else {
 					 b.bool = true;
 				 }
+				 
 				 ObjectB b1 = new ObjectB();
 				 b.other = b1;
 				 System.out.print("Enter a boolean value for variable bool in referenced object (0 for false || 1 for true): ");
@@ -64,6 +65,7 @@ public class ObjectCreator {
 					 b1.bool = true;
 				 }
 				 b1.other = b;
+				 
 				 System.out.println("Sending object to serialize");
 				 String jsonString = Serializer.serializeObject(b);
 				 System.out.println(jsonString);
@@ -131,7 +133,7 @@ public class ObjectCreator {
 	}
 	
 	public static void send(String jsonString) throws IOException {
-		ServerSocket serverSocket = new ServerSocket(port++);
+		ServerSocket serverSocket = new ServerSocket(port);
 		System.out.println("Waiting for Client to connect...");
         Socket clientSocket = serverSocket.accept();
         PrintWriter out = new PrintWriter(clientSocket.getOutputStream(), true);

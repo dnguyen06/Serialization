@@ -1,6 +1,8 @@
 package Serialize;
 import java.lang.reflect.Array;
 import java.lang.reflect.Field;
+import java.lang.reflect.Modifier;
+import java.util.ArrayList;
 import java.util.IdentityHashMap;
 import java.util.LinkedHashMap;
 
@@ -29,6 +31,7 @@ public class Serializer {
 	
 	private static JSONObject serializeClassHelper(Object obj) {
 		JSONObject classObj = new JSONObject();
+		
 		
 		try {
 			Field changeMap = classObj.getClass().getDeclaredField("map");		// Referenced Code : https://towardsdatascience.com/create-an-ordered-jsonobject-in-java-fb9629247d76
@@ -82,7 +85,9 @@ public class Serializer {
 			
 		} else {
 			classObj.put("type", "object");
-			classObj.put("fields", serializeFieldHelper(obj));
+			ArrayList<Field> fields = new ArrayList<>();
+			getFields(obj.getClass(), fields);
+			classObj.put("fields", serializeFieldHelper(fields, obj));
 		}
 		
 		
@@ -91,17 +96,17 @@ public class Serializer {
 		
 	}
 	
-	private static JSONArray serializeFieldHelper(Object obj) {
-		JSONArray fields = new JSONArray();
-		Field[] fieldList = obj.getClass().getDeclaredFields();
-		for (int i = 0; i < fieldList.length; i++) {
-			fieldList[i].setAccessible(true);
-			JSONObject field = new JSONObject();
+	private static JSONArray serializeFieldHelper(ArrayList<Field> fields, Object obj) {
+		JSONArray f = new JSONArray();
+		for (int i = 0; i < fields.size(); i++) {
+			Field field= fields.get(i);
+			field.setAccessible(true);
+			JSONObject fieldJSON = new JSONObject();
 			
 			try {
-				Field changeMap = field.getClass().getDeclaredField("map");		// Referenced Code : https://towardsdatascience.com/create-an-ordered-jsonobject-in-java-fb9629247d76
+				Field changeMap = fieldJSON.getClass().getDeclaredField("map");		// Referenced Code : https://towardsdatascience.com/create-an-ordered-jsonobject-in-java-fb9629247d76
 				changeMap.setAccessible(true);
-				changeMap.set(field, new LinkedHashMap<>());
+				changeMap.set(fieldJSON, new LinkedHashMap<>());
 				changeMap.setAccessible(false);
 			} catch (NoSuchFieldException e1) {
 				e1.printStackTrace();
@@ -114,19 +119,19 @@ public class Serializer {
 				e.printStackTrace();
 			}
 			
-			field.put("name", fieldList[i].getName());
-			field.put("declaringclass", fieldList[i].getDeclaringClass().getName());
+			fieldJSON.put("name", field.getName());
+			fieldJSON.put("declaringclass", field.getDeclaringClass().getName());
 			try {
-				if (fieldList[i].getType().isPrimitive()) {
-					field.put("value", fieldList[i].get(obj));
+				if (field.getType().isPrimitive()) {
+					fieldJSON.put("value", field.get(obj));
 				} else {
-					if(ihm.get(fieldList[i].get(obj)) == null) {
-						objects.put(serializeClassHelper(fieldList[i].get(obj)));
+					if(ihm.get(field.get(obj)) == null) {
+						objects.put(serializeClassHelper(field.get(obj)));
 					}
-					field.put("reference", ihm.get(fieldList[i].get(obj)));
+					fieldJSON.put("reference", ihm.get(field.get(obj)));
 				}
 				
-				fields.put(field);
+				f.put(fieldJSON);
 			} catch (IllegalArgumentException e) {
 					e.printStackTrace();
 			} catch (IllegalAccessException e) {
@@ -134,7 +139,21 @@ public class Serializer {
 			}
 		}
 		
-		return fields;
+		return f;
+	}
+	
+	private static void getFields(Class c, ArrayList<Field> fields) {
+		if (c == null) {
+			return;
+		}
+		
+		for(Field f : c.getDeclaredFields()) {
+			if (!Modifier.isStatic(f.getModifiers())) {
+				fields.add(f);
+			}
+		}
+		
+		getFields(c.getSuperclass(), fields);
 	}
 	
 }

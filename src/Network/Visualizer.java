@@ -7,16 +7,22 @@ import java.net.Socket;
 import java.net.UnknownHostException;
 import java.util.Scanner;
 
+import org.json.JSONException;
+
+import Objects.Inspector;
+import Serialize.Deserializer;
+
+
 public class Visualizer {
 	
-	public static int port = 5003;
+	public static int port = 5010;
 
 	public static void main(String[] args) {
 		try {
 			int done = 0;
 			Scanner keyboard = new Scanner(System.in);
 			while (done != 1) {
-				startConnection("LocalHost", port++);
+				startConnection("LocalHost", port);
 				System.out.println("Enter 0 to keep client alive || Enter 1 to close client");
 				done = keyboard.nextInt();
 			}
@@ -44,10 +50,29 @@ public class Visualizer {
 			}
 			output = output + more + "\n";
 		}
-		System.out.println(output);
+		//System.out.println(output);
 	
 		in.close();
 		clientSocket.close();
+		
+		
+
+		try {
+			Object obj = Deserializer.deserializeObject(output);
+			Inspector.inspect(obj, true);
+		} catch (ClassNotFoundException e) {
+			e.printStackTrace();
+		} catch (JSONException e) {
+			e.printStackTrace();
+		} catch (InstantiationException e) {
+			e.printStackTrace();
+		} catch (IllegalAccessException e) {
+			e.printStackTrace();
+		} catch (NoSuchFieldException e) {
+			e.printStackTrace();
+		}
+	
+		
 	}
 
 }
