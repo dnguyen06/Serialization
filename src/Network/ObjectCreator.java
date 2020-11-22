@@ -30,7 +30,8 @@ public class ObjectCreator {
 				 System.out.println("Server program Exited");
 				 done = true;
 			 }
-			 	 
+			 
+			 // Creates ObjectA with primitives int and float
 			 else if (userChoice == 1) {
 				 System.out.println("You chose 1");
 				 ObjectA a = new ObjectA();
@@ -46,6 +47,7 @@ public class ObjectCreator {
 				 
 			 }
 			 
+			 // Creates ObjectB with primitive boolean and field reference to another ObjectB
 			 else if (userChoice == 2) {
 				 System.out.println("You chose 2");
 				 ObjectB b = new ObjectB();
@@ -73,6 +75,7 @@ public class ObjectCreator {
 				 send(jsonString);
 			 }
 			 
+			 // Creates ObjectC with int array size 3
 			 else if (userChoice == 3) {
 				 System.out.println("You chose 3");
 				 ObjectC c = new ObjectC();
@@ -89,6 +92,7 @@ public class ObjectCreator {
 				 send(jsonString);
 			 }
 			 
+			 // Creates ObjectD with ObjectA array size 3 
 			 else if (userChoice == 4) {
 				 System.out.println("You chose 4");
 				 ObjectD d = new ObjectD();
@@ -107,6 +111,7 @@ public class ObjectCreator {
 				 
 			 }
 			 
+			 // Creates ObjectE with ObjectA arraylist
 			 else if (userChoice == 5) {
 				 System.out.println("You chose 5");
 				 ObjectE e = new ObjectE();
@@ -132,6 +137,7 @@ public class ObjectCreator {
 		keyboard.close();
 	}
 	
+	// Takes json and sends to client socket
 	public static void send(String jsonString) throws IOException {
 		ServerSocket serverSocket = new ServerSocket(port);
 		System.out.println("Waiting for Client to connect...");
@@ -148,6 +154,7 @@ public class ObjectCreator {
       
     }
 	
+	// Prints json to file
 	public static void fileCreator(String jsonString) {
 		try {
 			PrintWriter pw = new PrintWriter("File" + Integer.toString(fileCounter++) + ".json");

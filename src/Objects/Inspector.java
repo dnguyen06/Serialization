@@ -12,6 +12,7 @@ public class Inspector {
 	
 	private static IdentityHashMap<Object, Integer> ihm;
 
+
 	public static void inspect(Object obj, boolean recursive) {
 		Class c = obj.getClass();
 		ihm = new IdentityHashMap<Object, Integer>();
@@ -120,8 +121,6 @@ public class Inspector {
 			}
 
 		}
-
-	//}
 	
 
 	private static String getTabs(int depth) {

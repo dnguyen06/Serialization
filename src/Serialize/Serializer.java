@@ -142,6 +142,7 @@ public class Serializer {
 		return f;
 	}
 	
+	// Recurse the superclasses to get all non-static fields
 	private static void getFields(Class c, ArrayList<Field> fields) {
 		if (c == null) {
 			return;

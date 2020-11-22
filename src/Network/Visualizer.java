@@ -37,6 +37,7 @@ public class Visualizer {
 
 	}
 	
+	// Receives json from server
 	public static void startConnection(String ip, int port) throws UnknownHostException, IOException {		// Code referenced from Amir in tutorial
 		Socket clientSocket = new Socket(ip, port);
 		BufferedReader in = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()));
@@ -56,7 +57,7 @@ public class Visualizer {
 		clientSocket.close();
 		
 		
-
+		// Deserializes json received then sends to Inspector
 		try {
 			Object obj = Deserializer.deserializeObject(output);
 			Inspector.inspect(obj, true);

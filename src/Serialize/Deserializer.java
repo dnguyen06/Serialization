@@ -16,6 +16,7 @@ public class Deserializer {
 		JSONObject objects = new JSONObject(source);
 		JSONArray classes = objects.getJSONArray("objects");
 		
+		// Creates instances for every object first
 		for (int i = 0; i < classes.length(); i ++) {
 			JSONObject classObj = (JSONObject) classes.get(i);
 			if (classObj.get("type").toString().equals("array")) {
@@ -36,7 +37,7 @@ public class Deserializer {
 			
 		}
 		
-		
+		// Iterate through created objects and set fields/entries
 		for (int i = 0; i < classes.length(); i++) {
 			JSONObject classObj = (JSONObject) classes.get(i);
 			if (classObj.get("type").toString().equals("array")) {
