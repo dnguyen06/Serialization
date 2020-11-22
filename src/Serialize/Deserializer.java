@@ -7,15 +7,14 @@ import org.json.*;
 
 public class Deserializer {
 	
-	private static IdentityHashMap<String, Object> ihm;
+	private static IdentityHashMap<Integer, Object> ihm;
 	private static Object[] holders;
 	
 	public static Object deserializeObject (String source) throws ClassNotFoundException, JSONException, InstantiationException, IllegalAccessException, NoSuchFieldException, SecurityException {
 		
-		ihm = new IdentityHashMap<String, Object>();
+		ihm = new IdentityHashMap<Integer, Object>();
 		JSONObject objects = new JSONObject(source);
 		JSONArray classes = objects.getJSONArray("objects");
-		holders = new Object[10];
 		
 		for (int i = 0; i < classes.length(); i ++) {
 			JSONObject classObj = (JSONObject) classes.get(i);
@@ -25,12 +24,14 @@ public class Deserializer {
 				Class c = Class.forName(classObj.get("class").toString());
 				Class type = c.getComponentType();
 				Object obj = Array.newInstance(type, length);
-				holders[id] = obj;
+				ihm.put(id, obj);
+
 			} else {
 				Class c = Class.forName(classObj.get("class").toString());
 				int id = Integer.parseInt(classObj.get("id").toString());
 				Object obj = c.newInstance();
-				holders[id] = obj;
+				ihm.put(id, obj);
+
 			}
 			
 		}
@@ -43,7 +44,8 @@ public class Deserializer {
 				int id = Integer.parseInt(classObj.get("id").toString());
 				for (int j = 0; j < entries.length(); j++) {
 					JSONObject entryObj = (JSONObject) entries.get(j);
-					setEntry(holders[id], entryObj, j);			
+					setEntry(ihm.get(id), entryObj, j);
+		
 				}
 			} else {
 				JSONArray fields = classObj.getJSONArray("fields");
@@ -51,14 +53,15 @@ public class Deserializer {
 				for (int j = 0; j < fields.length(); j++) {
 					JSONObject fieldObj = (JSONObject) fields.get(j);
 					Class c = Class.forName(fieldObj.get("declaringclass").toString());
-					setField(holders[id], fieldObj, c);			
+					setField(ihm.get(id), fieldObj, c);
+			
 				}
 			}
 			
 		}
 					
-		
-		return holders[0];
+		return ihm.get(0);
+
 	}
 	
 	public static void setEntry(Object obj, JSONObject entryObj, int index) {
@@ -68,7 +71,7 @@ public class Deserializer {
 		} else {
 			if (!entryObj.get("reference").toString().equals("null")) {
 				int reference = Integer.parseInt(entryObj.get("reference").toString());
-				Array.set(obj, index, holders[reference]);
+				Array.set(obj, index, ihm.get(reference));
 			}
 			
 		}
@@ -87,7 +90,7 @@ public class Deserializer {
 			field.set(obj, Boolean.parseBoolean(fieldObj.get("value").toString()));
 		} else {
 			int reference = Integer.parseInt(fieldObj.get("reference").toString());
-			field.set(obj, holders[reference]);
+			field.set(obj, ihm.get(reference));
 		}
 	}
 
