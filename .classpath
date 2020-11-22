@@ -2,6 +2,7 @@
 <classpath>
 	<classpathentry kind="src" path="src"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
+	<classpathentry kind="con" path="org.eclipse.jdt.junit.JUNIT_CONTAINER/5"/>
 	<classpathentry kind="lib" path="C:/Users/David Nguyen/Desktop/CPSC 501/cpsc-501-a3/json-20201115.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
